@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="it" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SYNTHESIS - Rassegna Tecnologia e AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --background: #131313;
+      --surface: #201f1f;
+      --surface-lowest: #0e0e0e;
+      --surface-low: #1c1b1b;
+      --surface-high: #2a2a2a;
+      --surface-highest: #353534;
+      --on-background: #e5e2e1;
+      --on-surface: #e5e2e1;
+      --on-variant: #cbc3d7;
+      --outline: #958ea0;
+      --outline-variant: #494454;
+      --primary: #d0bcff;
+      --secondary: #4cd7f6;
+      --tertiary: #ffb869;
+      --tech: #00b5a3;
+      --ai: #8b5cf6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      background: var(--background);
+      color: var(--on-background);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    .material-symbols-outlined {
+      font-family: "Material Symbols Outlined";
+      font-weight: normal;
+      font-style: normal;
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: "liga";
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .sidebar {
+      width: 256px;
+      height: 100vh;
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 24px;
+      background: var(--surface-lowest);
+      border-right: 1px solid rgba(73, 68, 84, .55);
+    }
+
+    .brand { margin-bottom: 42px; }
+
+    .brand h1 {
+      margin: 0;
+      color: var(--primary);
+      font-size: 32px;
+      line-height: 40px;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--on-variant);
+      font-family: Geist, sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: .05em;
+    }
+
+    .nav { display: grid; gap: 4px; }
+
+    .nav button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 12px;
+      border-radius: 2px;
+      color: var(--on-variant);
+      font-family: Geist, sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: .05em;
+      transition: color .2s ease, background .2s ease;
+    }
+
+    .nav button.active {
+      color: var(--primary);
+      font-weight: 700;
+      background: rgba(42, 42, 42, .5);
+    }
+
+    .nav button:hover { color: var(--primary); background: rgba(53, 53, 52, .35); }
+
+    .shell {
+      flex: 1;
+      min-height: 100vh;
+      margin-left: 256px;
+      display: flex;
+      flex-direction: column;
+      background: var(--background);
+    }
+
+    .canvas {
+      width: min(100%, 1160px);
+      margin: 0 auto;
+      padding: 96px clamp(24px, 5vw, 88px) 80px;
+    }
+
+    .hero { margin-bottom: 48px; }
+
+    .hero h2 {
+      margin: 0;
+      color: var(--on-surface);
+      font-size: 40px;
+      line-height: 48px;
+      letter-spacing: 0;
+      font-weight: 900;
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+    .chip {
+      border: 1px solid rgba(73, 68, 84, .7);
+      color: var(--on-variant);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .section { margin-bottom: 80px; }
+
+    .section[hidden], details.story[hidden] { display: none; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(73, 68, 84, .55);
+    }
+
+    .section-head h3 {
+      margin: 0;
+      color: var(--on-surface);
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 800;
+    }
+
+    .section-head span { color: var(--on-variant); font-size: 14px; white-space: nowrap; }
+
+    details.story {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+      border: 1px solid rgba(73, 68, 84, .55);
+      border-radius: 4px;
+      background: var(--surface-lowest);
+    }
+
+    details.story::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 6px;
+      background: var(--accent, var(--tech));
+    }
+
+    details.story summary {
+      cursor: pointer;
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 32px;
+      gap: 16px;
+      align-items: start;
+      padding: 24px 24px 20px 32px;
+    }
+
+    details.story summary::-webkit-details-marker { display: none; }
+
+    .title { display: grid; gap: 8px; }
+
+    .title strong { color: var(--on-surface); font-size: 20px; line-height: 26px; font-weight: 800; }
+
+    .title span {
+      color: var(--on-variant);
+      font-family: Literata, Georgia, serif;
+      font-size: 16px;
+      line-height: 26px;
+    }
+
+    .toggle {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(73, 68, 84, .75);
+      border-radius: 999px;
+      color: var(--on-variant);
+      transition: color .2s ease, border-color .2s ease;
+    }
+
+    summary:hover .toggle { color: var(--primary); border-color: rgba(208, 188, 255, .7); }
+
+    .toggle::before { content: "add"; font-family: "Material Symbols Outlined"; font-size: 18px; }
+
+    details[open] .toggle::before { content: "remove"; }
+
+    .story-body { display: block; padding: 0 24px 24px 32px; }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      color: var(--primary);
+      background: var(--surface-low);
+      border: 1px solid rgba(73, 68, 84, .55);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-family: Geist, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .label.warning { color: var(--tertiary); }
+
+    .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+
+    .fact { background: var(--surface-low); border: 1px solid rgba(73, 68, 84, .45); border-radius: 4px; padding: 12px; }
+
+    .fact h5 { margin: 0 0 6px; color: var(--on-surface); font-size: 14px; line-height: 20px; font-weight: 750; }
+
+    .fact p { margin: 0; color: var(--on-variant); font-size: 14px; line-height: 22px; }
+
+    .article p {
+      margin: 0 0 18px;
+      color: var(--on-surface);
+      font-family: Literata, Georgia, serif;
+      font-size: 17px;
+      line-height: 31px;
+    }
+
+    .article strong { color: #fff; font-weight: 800; }
+
+    .sources { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+
+    .sources a {
+      background: var(--surface-low);
+      border: 1px solid rgba(73, 68, 84, .65);
+      color: var(--primary);
+      text-decoration: none;
+      font-family: Geist, sans-serif;
+      font-size: 12px;
+      font-weight: 650;
+      padding: 5px 12px;
+      border-radius: 999px;
+    }
+
+    footer {
+      margin-top: auto;
+      border-top: 1px solid rgba(73, 68, 84, .55);
+      background: var(--surface-lowest);
+      color: var(--on-variant);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 48px clamp(24px, 5vw, 88px);
+      font-size: 13px;
+    }
+
+    footer strong { color: var(--on-variant); font-size: 24px; line-height: 32px; letter-spacing: 0; }
+
+    @media (max-width: 900px) {
+      body { display: block; }
+      .sidebar {
+        display: flex;
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: auto;
+        padding: 16px;
+        border-right: 0;
+        border-bottom: 1px solid rgba(73, 68, 84, .55);
+      }
+      .brand { margin-bottom: 14px; }
+      .nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .nav button { justify-content: center; padding: 7px 8px; }
+      .nav button span:last-child { display: none; }
+      .shell { margin-left: 0; }
+      .canvas { padding: 40px 16px 96px; }
+      .hero h2 { font-size: 32px; line-height: 38px; }
+      .section-head { align-items: flex-start; flex-direction: column; gap: 6px; }
+      .section-head span { white-space: normal; }
+      .story-body { padding-right: 16px; padding-left: 22px; }
+      details.story summary { padding: 20px 16px 18px 22px; }
+      .facts { grid-template-columns: 1fr; }
+      footer { padding: 32px 16px 96px; align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" aria-label="Navigazione">
+    <div class="brand">
+      <h1>SYNTHESIS</h1>
+      <p>La tua sintesi AI quotidiana</p>
+    </div>
+    <nav class="nav">
+      <button class="active" type="button" data-filter="top"><span class="material-symbols-outlined">newspaper</span><span>Top Stories</span></button>
+      <button type="button" data-filter="tech"><span class="material-symbols-outlined">memory</span><span>Tecnologia</span></button>
+      <button type="button" data-filter="ai"><span class="material-symbols-outlined">auto_awesome</span><span>AI</span></button>
+    </nav>
+  </aside>
+
+  <main class="shell">
+    <div class="canvas">
+      <section class="hero">
+        <h2>Synthesis delle ultime 24 ore</h2>
+        <div class="chips">
+          <span class="chip">Ultime 24 ore</span>
+          <span class="chip">Fonti tradotte in italiano</span>
+          <span class="chip">Deduplicata e aggregata</span>
+          <span class="chip">Tono neutro-informativo</span>
+        </div>
+      </section>
+
+      <section class="section" data-section="tech">
+        <div class="section-head"><h3>Tecnologia</h3><span>2 notizie aggregate nella preview</span></div>
+        <details class="story" style="--accent: var(--tech)" data-category="tech">
+          <summary><span class="title"><strong>Google prepara I/O 2026 con Android 17, ChromeOS e forte integrazione Gemini</strong><span>L'evento sembra puntare su Gemini come livello AI trasversale per sistema operativo, ricerca, produttivita e strumenti developer.</span></span><span class="toggle" aria-hidden="true"></span></summary>
+          <div class="story-body"><span class="label">Notizia confermata / preview evento</span><div class="facts"><div class="fact"><h5>Dettagli chiave</h5><p>Android 17, Gemini Intelligence, possibili novita ChromeOS e strumenti developer.</p></div><div class="fact"><h5>Impatto</h5><p>Google punta a rendere l'AI una funzione di sistema, non solo un'app separata.</p></div><div class="fact"><h5>Perche conta</h5><p>La distribuzione dentro Android e Chrome puo pesare quanto la qualita del modello.</p></div></div><div class="article"><p>Google si avvicina a I/O 2026 con un pacchetto di anticipazioni che ruota attorno ad Android 17, ChromeOS/Googlebook e a una presenza piu profonda di Gemini nei prodotti dell'azienda. Il punto non sembra essere soltanto una nuova versione del sistema operativo, ma <strong>un cambio di ruolo dell'AI: da funzione separata a componente integrata</strong> nelle interfacce, nelle app e nei flussi di lavoro quotidiani.</p><p>Le indicazioni raccolte dalle fonti suggeriscono che Google voglia usare l'evento per mostrare come <strong>Gemini possa agire da livello comune tra smartphone, browser, laptop, ricerca e strumenti per sviluppatori</strong>.</p></div><div class="sources"><a href="https://www.techradar.com/news/live/android-show-2026-live">TechRadar</a><a href="https://www.tomsguide.com/phones/google-pixel-phones/google-i-o-2026-date-time-potential-announcements-and-everything-else-you-need-to-know">Tom's Guide</a></div></div>
+        </details>
+        <details class="story" style="--accent: var(--tech)" data-category="tech"><summary><span class="title"><strong>La prossima ondata hardware resta legata alla domanda di chip per AI</strong><span>La crescita dei modelli AI continua a spingere fabbriche, litografia avanzata, supply chain e investimenti in capacita produttiva.</span></span><span class="toggle" aria-hidden="true"></span></summary><div class="story-body"><span class="label">Analisi di settore</span><div class="facts"><div class="fact"><h5>Dettagli chiave</h5><p>Processi avanzati, capacita EUV, fabbriche dedicate e clienti AI intensivi.</p></div><div class="fact"><h5>Impatto</h5><p>La capacita produttiva diventa un vantaggio competitivo nell'AI.</p></div><div class="fact"><h5>Perche conta</h5><p>I colli di bottiglia hardware possono rallentare servizi AI pronti lato software.</p></div></div><div class="article"><p>Il settore semiconduttori continua a muoversi attorno alla domanda di calcolo per l'AI. La questione non riguarda solo le GPU piu note, ma <strong>l'intera catena produttiva che consente ai modelli AI di essere addestrati ed eseguiti</strong>.</p></div></div></details>
+      </section>
+
+      <section class="section" data-section="ai">
+        <div class="section-head"><h3>AI</h3><span>4 notizie aggregate nella preview</span></div>
+        <details class="story" style="--accent: var(--ai)" data-category="ai"><summary><span class="title"><strong>Stati Uniti e Cina discutono guardrail per i modelli AI piu potenti</strong><span>Il confronto riguarda sicurezza, accesso ai modelli frontier e rischio che capacita avanzate finiscano in mani non controllate.</span></span><span class="toggle" aria-hidden="true"></span></summary><div class="story-body"><span class="label">Notizia confermata</span><div class="facts"><div class="fact"><h5>Dettagli chiave</h5><p>Guardrail, accesso ai modelli, sicurezza, protocolli comuni e capacita dual-use.</p></div><div class="fact"><h5>Impatto</h5><p>Possibili standard minimi per laboratori AI e governi.</p></div><div class="fact"><h5>Perche conta</h5><p>La governance dei modelli frontier entra nella diplomazia tra grandi potenze.</p></div></div><div class="article"><p>Stati Uniti e Cina stanno discutendo possibili guardrail per i modelli AI piu potenti. La notizia e significativa perche <strong>sposta il tema della sicurezza AI dal dibattito accademico alla diplomazia operativa</strong>.</p></div></div></details>
+        <details class="story" style="--accent: var(--ai)" data-category="ai"><summary><span class="title"><strong>Anthropic supera OpenAI nell'adozione AI business secondo Ramp</strong><span>Il dato suggerisce una forte trazione enterprise per Claude, soprattutto negli strumenti di coding e nei flussi aziendali paganti.</span></span><span class="toggle" aria-hidden="true"></span></summary><div class="story-body"><span class="label">Analisi dati</span><div class="facts"><div class="fact"><h5>Dettagli chiave</h5><p>Adozione business, Claude, coding agentico, spesa aziendale e dati Ramp.</p></div><div class="fact"><h5>Impatto</h5><p>Il mercato enterprise AI appare piu frammentato e competitivo.</p></div><div class="fact"><h5>Perche conta</h5><p>La spesa reale delle aziende pesa piu della sola popolarita consumer.</p></div></div><div class="article"><p>Secondo il Ramp AI Index citato da VentureBeat, Anthropic avrebbe superato OpenAI nell'adozione da parte delle aziende statunitensi paganti. Il dato misura <strong>spesa aziendale rilevata attraverso transazioni</strong>.</p></div></div></details>
+        <details class="story" style="--accent: var(--ai)" data-category="ai"><summary><span class="title"><strong>ResolveGrid porta agenti AI nel field service tecnico</strong><span>La piattaforma usa computer vision, manuali e supporto contestuale per assistere tecnici sul campo.</span></span><span class="toggle" aria-hidden="true"></span></summary><div class="story-body"><span class="label">Comunicato stampa</span><div class="article"><p>ResolveGrid ha lanciato una piattaforma agentica pensata per il field service tecnico, con l'obiettivo di <strong>aiutare i tecnici a diagnosticare problemi piu rapidamente</strong>.</p></div></div></details>
+        <details class="story" style="--accent: var(--ai)" data-category="ai"><summary><span class="title"><strong>Social e community discutono il rischio permission trap negli agenti AI</strong><span>La discussione riguarda il compromesso tra agenti utili, accesso agli strumenti e controllo umano.</span></span><span class="toggle" aria-hidden="true"></span></summary><div class="story-body"><span class="label warning">Discussione social / non confermata da testata</span><div class="article"><p>Nelle community tecniche continua il dibattito sui rischi operativi degli agenti AI: <strong>piu autonomia significa piu utilita, ma anche piu rischio operativo</strong>.</p></div></div></details>
+      </section>
+    </div>
+    <footer><strong>SYNTHESIS</strong><span>Rassegna generata per fonti consultabili, deduplicata e aggregata.</span></footer>
+  </main>
+  <script>
+    const filterButtons = document.querySelectorAll("[data-filter]");
+    const sections = document.querySelectorAll("[data-section]");
+    const stories = document.querySelectorAll("[data-category]");
+    const counts = { top: "Tutte le notizie piu rilevanti", tech: "Solo Tecnologia", ai: "Solo AI" };
+    function applyFilter(filter) {
+      filterButtons.forEach((button) => button.classList.toggle("active", button.dataset.filter === filter));
+      sections.forEach((section) => { section.hidden = filter !== "top" && section.dataset.section !== filter; });
+      stories.forEach((story) => { story.hidden = filter !== "top" && story.dataset.category !== filter; story.open = false; });
+      document.querySelector(".hero h2").textContent = "Synthesis delle ultime 24 ore";
+      document.querySelector(".hero .chip:first-child").textContent = counts[filter];
+    }
+    filterButtons.forEach((button) => button.addEventListener("click", () => applyFilter(button.dataset.filter)));
+  </script>
+</body>
+</html>
